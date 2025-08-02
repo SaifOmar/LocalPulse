@@ -2,12 +2,14 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Account;
 use App\Rules\UniqueHandle;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\File;
 use Illuminate\Support\Arr;
+use Illuminate\Validation\ValidationException;
 
 class UserRegiserRequest extends FormRequest
 {
@@ -36,10 +38,10 @@ class UserRegiserRequest extends FormRequest
             'gender' => ['nullable', 'string', 'max:255'],
             'avatar' => [
                 'nullable',
-                File::image()
-                    ->min(1024)
-                    ->max(12 * 1024)
-                    ->dimensions(Rule::dimensions()->minWidth(1000)->minHeight(1000))
+                // File::image()
+                //     ->min(1024)
+                //     ->max(12 * 1024)
+                //     ->dimensions(Rule::dimensions()->minWidth(1000)->minHeight(1000))
             ]
         ];
     }

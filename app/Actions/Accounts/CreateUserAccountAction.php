@@ -6,6 +6,7 @@ use App\Helpers\Helpers;
 use App\Models\Account;
 use Illuminate\Support\Arr;
 use App\Models\User;
+use Illuminate\Support\Facades\File;
 use function array_merge;
 
 class CreateUserAccountAction
@@ -20,6 +21,17 @@ class CreateUserAccountAction
     }
     private function createAccount(User $user, array $data): Account
     {
+        // this is just here for testing purposes
+        if (isset($data['avatar'])) {
+            $avatar = $data['avatar'];
+            // dd(File::get($avatar));
+            $dirname = File::dirname($avatar);
+            $fileCreatedName =  File::name($avatar);
+            // dd(File::basename($avatar));
+            $type = str_replace('image/', '', File::mimeType($avatar));
+            $fileName = sprintf('%s/%s.%s', $dirname, $fileCreatedName, $type);
+            $data['avatar'] = $fileName;
+        }
         return Account::create([
             'user_id' => $user->id,
             ...Arr::except($data, ['handle']),

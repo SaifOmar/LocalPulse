@@ -14,7 +14,6 @@ class AccountResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        // add more fields later
         return parent::toArray($request);
     }
 }
