@@ -1,6 +1,6 @@
 ###
 
-POST http://127.0.0.1:8000/api/users/register HTTP/1.1
+POST http://127.0.0.1:8000/api/auth/users/register HTTP/1.1
 Content-Type: application/json
 Accept: application/json
 
@@ -22,6 +22,3 @@ Accept: application/json
   "identifier": "saifss@gmail.com",
   "password": "12345678"
 }
-
-
-###

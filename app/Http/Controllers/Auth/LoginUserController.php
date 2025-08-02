@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
 use App\Http\Requests\UserLoginRequest;
 use App\Models\User;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\JsonResponse;
 use App\Enums\IdentifierEnum;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class LoginUserController extends Controller
@@ -23,6 +24,8 @@ class LoginUserController extends Controller
             ]);
         }
         $token = User::where("email", $credentials['email'])->first()->createToken('access')->plainTextToken;
+
+
         return response()->json(["success" => true, "access" => $token]);
     }
 
@@ -34,7 +37,7 @@ class LoginUserController extends Controller
             if ($user = User::where($field->value, $identifier)->first()) {
                 return [
                     "email" => $user->email,
-                    'password' => $password,
+                    "password" => $password,
                 ];
             }
         }

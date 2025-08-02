@@ -1,9 +1,15 @@
 <?php
 
-use App\Http\Controllers\LoginUserController;
-use App\Http\Controllers\RegisterUserController;
+use App\Http\Controllers\Accounts\AccountController;
+use App\Http\Controllers\Auth\LoginUserController;
+use App\Http\Controllers\Auth\RegisterUserController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::post("users/register", RegisterUserController::class);
-Route::post("users/login", LoginUserController::class);
+// user prefexis
+Route::post("auth/users/register", RegisterUserController::class);
+Route::post("auth/users/login", LoginUserController::class);
+
+Route::delete("auth/accounts/{account}/delete", [AccountController::class, "destroy"]);
+Route::put("auth/accounts/{account}/update", [AccountController::class, "update"]);
+// Route::delete("auth/users/{account}/delete", [AccountController::class, "destroy"]);

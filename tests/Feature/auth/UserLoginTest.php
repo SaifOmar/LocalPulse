@@ -6,7 +6,7 @@ uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
 
 test("user can login with valid credentials", function () {
     $user = User::factory()->create();
-    $response = $this->postJson("/api/users/login", [
+    $response = $this->postJson("/api/auth/users/login", [
         "identifier" => $user->email,
         "password" => "password",
     ]);
@@ -16,7 +16,7 @@ test("user can login with valid credentials", function () {
 
 test("user can login with invalid credentials", function () {
     $user = User::factory()->create();
-    $response = $this->postJson("/api/users/login", [
+    $response = $this->postJson("/api/auth/users/login", [
         "identifier" => $user->email,
         "password" => "wrong-password",
     ]);

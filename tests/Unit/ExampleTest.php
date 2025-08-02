@@ -1,5 +1,11 @@
 <?php
 
+function hello()
+{
+    return 'Hello World';
+}
 test('that true is true', function () {
-    expect(true)->toBeTrue();
+
+    $hell = hello();
+    expect($hell)->toBe('Hello World');
 });
