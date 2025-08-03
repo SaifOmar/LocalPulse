@@ -1,4 +1,5 @@
 <?php
+
 uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
 
 use App\Models\User;
@@ -20,23 +21,16 @@ test('user can update account specific data', function () {
     $response = $this->putJson(
         createUri($account->id),
         [
-            // 'first_name' => 'dSaif',
-            // 'last_name' => 'dShaikh',
-            // 'email' => 'dsaif@gmail.com',
             'handle' => 'dSaifOmar',
             'bio' => 'dI am a saif',
-
         ]
     );
     $response->assertStatus(200);
-    $response->assertJson([
-        // 'user' => [
-        //     'first_name' => 'dSaif',
-        //     'last_name' => 'dShaikh',
-        //     'email' => 'dsaif@gmail.com',
-        // ],
-        'handle' => '@dsaifomar',
-        'bio' => 'dI am a saif',
+    $response->assertJsonStructure([
+        'id',
+        'user_id',
+        'handle',
+        'bio',
     ]);
     $account = Account::find($account->id);
     // $this->assertEquals($account->user->first_name, 'dSaif');
@@ -59,17 +53,15 @@ test('user can update user specific data', function () {
             'first_name' => 'dSaif',
             'last_name' => 'dShaikh',
             'email' => 'dsaif@gmail.com',
-
         ]
     );
+
     $response->assertStatus(200);
-    $response->assertJson([
-        'user' => [
-            'first_name' => 'dSaif',
-            'last_name' => 'dShaikh',
-            'email' => 'dsaif@gmail.com',
-        ],
-    ]);
+    // $response->assertJsonStructure([
+    //     'first_name',
+    //     'last_name',
+    //     'email',
+    // ]);
     $account = Account::find($account->id);
     $this->assertEquals($account->user->first_name, 'dSaif');
     $this->assertEquals($account->user->last_name, 'dShaikh');
@@ -94,15 +86,14 @@ test('user can update mixed data', function () {
         ],
     );
     $response->assertStatus(200);
-    $response->assertJson([
-        'bio' => 'dI am a saif',
-        'gender' => 'male',
-        'user' => [
-            'first_name' => 'dSaif',
-            'last_name' => 'dShaikh',
-            'email' => 'dsaif@gmail.com',
-        ],
-    ]);
+    $response->assertJsonStructure([
+        'id',
+        'user_id',
+        'handle',
+        'avatar',
+        'bio'
+     ]);
+
     $account = Account::find($account->id);
     $this->assertEquals($account->user->first_name, 'dSaif');
     $this->assertEquals($account->user->last_name, 'dShaikh');

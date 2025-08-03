@@ -42,12 +42,16 @@ test("user can register with avatar image", function () {
         "password_confirmation" => "password",
         "avatar" => UploadedFile::fake()->image('avatar.png', 1024, 1024)->size(1024),
     ]);
+    dump($response->json());
     $response->assertStatus(201);
     $response->assertJsonStructure([
         "first_name",
         "last_name",
         "email",
-        "access"
+        "access",
+        'id',
+        'handle',
+        'avatar',
+        'user_id',
     ]);
-    dump($response->json());
 });

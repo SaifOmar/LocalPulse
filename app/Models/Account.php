@@ -55,7 +55,7 @@ class Account extends Model
     {
         return $this->belongsTo(User::class);
     }
-    public function image()
+    public function avatar()
     {
         return $this->hasOne(Image::class);
     }

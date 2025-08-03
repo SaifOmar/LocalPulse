@@ -109,7 +109,7 @@ class ImageProcessor implements MediaProcessor
         }
         $imageData = ob_get_clean();
 
-        Storage::disk('local')->put($filename, $imageData);
+        Storage::disk('public')->put($filename, $imageData);
 
         return $filename;
     }

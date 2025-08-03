@@ -41,5 +41,5 @@ test('MediaDispatcher handles file and stores it', function () {
     $dispatcher = new MediaDispatcher($file);
     $newFilename = $dispatcher->handle($distPath);
 
-    Storage::disk('local')->assertExists("{$newFilename}");
+    Storage::disk('public')->assertExists("{$newFilename}");
 });

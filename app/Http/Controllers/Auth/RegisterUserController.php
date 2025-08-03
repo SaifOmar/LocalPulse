@@ -33,6 +33,7 @@ class RegisterUserController extends Controller
 
             return response()->json(new UserResource($user, $account))->setStatusCode(201);
         } catch (\Exception $e) {
+            dump("here");
             throw ValidationException::withMessages([['error' => $e->getMessage()]]);
         }
     }
