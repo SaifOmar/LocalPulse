@@ -2,13 +2,12 @@
 
 use App\Models\Account;
 use App\Models\User;
-use Symfony\Component\HttpFoundation\ParameterBag;
 
 uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
 
 test("user can login with valid credentials(email)", function () {
     $user = User::factory()->create();
-    $account = Account::create([
+    Account::create([
         "user_id" => $user->id,
         'handle' => "@saifomar",
     ]);

@@ -3,12 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Requests\UserLoginRequest;
-use App\Models\User;
-use Illuminate\Validation\ValidationException;
 use Illuminate\Http\JsonResponse;
-use App\Enums\IdentifierEnum;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class LoginUserController extends Controller
 {

@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
  * @property int $id
@@ -23,7 +22,8 @@ use Symfony\Component\HttpFoundation\ParameterBag;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Account> $accounts
  * @property-read int|null $accounts_count
  * @property-read string $name
- * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int,
+ * \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
  * @property-read int|null $tokens_count
@@ -45,7 +45,9 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens;
+    use HasFactory;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -92,5 +94,9 @@ class User extends Authenticatable
     public function getFirstAccountAttribute(): Account
     {
         return $this->accounts->where('first', true)->first();
+    }
+    public function image(): Image
+    {
+        return $this->getFirstAccountAttribute()->image;
     }
 }

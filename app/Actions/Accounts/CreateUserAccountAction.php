@@ -7,12 +7,13 @@ use App\Models\Account;
 use Illuminate\Support\Arr;
 use App\Models\User;
 use Illuminate\Support\Facades\File;
+
 use function array_merge;
 
 class CreateUserAccountAction
 {
     public function first(User $user, array $data): Account
-    {;
+    {
         return $this->createAccount($user, array_merge(['first' => true], $data));
     }
     public function afterFirst(User $user, array $data): Account

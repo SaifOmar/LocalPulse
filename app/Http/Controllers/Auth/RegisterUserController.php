@@ -31,7 +31,6 @@ class RegisterUserController extends Controller
 
             $user->access = $token;
 
-
             return response()->json(new UserResource($user, $account))->setStatusCode(201);
         } catch (\Exception $e) {
             throw ValidationException::withMessages([['error' => $e->getMessage()]]);
