@@ -5,10 +5,6 @@ use App\Models\User;
 
 uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
 
-
-
-
-//
 test('user account created automatically at registration', function () {
     $email = fake()->safeEmail();
     $response = $this->post('/api/auth/users/register', [
