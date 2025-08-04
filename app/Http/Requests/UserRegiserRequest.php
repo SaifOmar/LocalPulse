@@ -51,6 +51,6 @@ class UserRegiserRequest extends FormRequest
      */
     public function payload(): array
     {
-        return Arr::except($this->validated(), ['first_name', 'last_name', 'email', 'password']);
+        return Arr::except($this->validated(), ['first_name', 'last_name', 'email']);
     }
 }

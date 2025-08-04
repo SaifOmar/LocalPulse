@@ -16,6 +16,7 @@ test('user can update account specific data', function () {
     $account = Account::create([
         'user_id' => $user->id,
         'handle' => 'SaifOmar',
+        'password' => Hash::make('password'),
     ]);
 
     $response = $this->putJson(
@@ -45,6 +46,7 @@ test('user can update user specific data', function () {
     $account = Account::create([
         'user_id' => $user->id,
         'handle' => 'SaifOmar',
+        'password' => Hash::make('password'),
     ]);
 
     $response = $this->putJson(
@@ -73,6 +75,7 @@ test('user can update mixed data', function () {
     $account = Account::create([
         'user_id' => $user->id,
         'handle' => 'SaifOmar',
+        'password' => Hash::make('password'),
     ]);
 
     $response = $this->putJson(
@@ -106,10 +109,12 @@ test("user can't update with a taken handle", function () {
     $account = Account::create([
         'user_id' => $user->id,
         'handle' => '@saifomar',
+        'password' => Hash::make('password'),
     ]);
     $account2 = Account::create([
         'user_id' => $user->id,
         'handle' => '@saifomar2',
+        'password' => Hash::make('password'),
     ]);
 
     $response = $this->putJson(

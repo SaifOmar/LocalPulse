@@ -39,5 +39,4 @@ class CreateAccountRequest extends FormRequest
             ],
         ];
     }
-    // should here call the image compression helper
 }

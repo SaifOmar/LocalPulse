@@ -22,6 +22,7 @@ test('Queue dispatched', function () {
     $user = User::factory()->create();
     $data = [
         'handle' => 'SaifOmar',
+        'password' => Hash::make('password'),
     ];
     $account = $action->first($user, $data);
     ProcessMedia::dispatch($file, $distPath, $account);

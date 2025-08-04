@@ -7,6 +7,7 @@ use App\Models\Account;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -37,43 +38,55 @@ class UserLoginRequest extends FormRequest
     public function authenticate(): string
     {
         $this->ensureIsNotRateLimited();
-        $credentials = $this->resolveCredentials($this->identifier, $this->password);
-        if (empty($credentials) || !Auth::attempt($credentials)) {
+        $account = $this->getLoginAccount($this->identifier);
+        if (!$account || !$this->authAttempt($account, $this->password)) {
             RateLimiter::hit($this->throttleKey(), 60);
             throw ValidationException::withMessages([
                 'error' => ['The provided credentials are incorrect.'],
             ]);
         }
+        $email = $account->user->email;
         RateLimiter::clear($this->throttleKey());
-        $account = Account::where("user_id", User::where("email", $credentials['email'])->first()->id)->first();
-        return User::where("email", $credentials['email'])->first()->createToken('access' . $account->handle)->plainTextToken;
+        // $account = Account::where("user_id", User::where("email", $email)->first()->id)->first();
+        return User::where("email", $email)->first()->createToken('access' . $account->handle)->plainTextToken;
+    }
+    public function authAttempt(Account $account, string $password): bool
+    {
+        if ($account) {
+            if (Hash::check($password, $account->password)) {
+                return true;
+            }
+        }
+        return false;
     }
     // could be cleaner
-    public function resolveCredentials(string $identifier, string $password): array
+    public function getLoginAccount(string $identifier): ?Account
     {
         $identifiers = IdentifierEnum::cases();
+
         foreach ($identifiers as $field) {
             switch ($field) {
                 case IdentifierEnum::EMAIL:
-                    if ($user = User::where($field->value, $identifier)->first()) {
-                        return [
-                            "email" => $user->email,
-                            "password" => $password,
-                        ];
+                    $user = User::where($field->value, $identifier)->with('accounts')->first();
+                    if ($user?->firstAccount) {
+                        return $user->first_account;
+                    } else {
+                        if ($acocunt = $user?->accounts->first()) {
+                            return $acocunt;
+                        }
                     }
                     break;
+
                 case IdentifierEnum::HANDLE:
-                    if ($user = Account::where('handle', $identifier)->first()->user) {
-                        return [
-                            "email" => $user->email,
-                            "password" => $password,
-                        ];
+                    $account = Account::where('handle', strtolower($identifier))->first();
+                    if ($account) {
+                        return $account;
                     }
                     break;
             }
         }
-        // fallback would fail later
-        return ["email" => $identifier, "password" => $password];
+
+        return null;
     }
 
     /**

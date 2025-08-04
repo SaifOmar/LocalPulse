@@ -10,6 +10,7 @@ test('can create account for user with valid attributes', function () {
     $user = User::factory()->create();
     $data = [
         'handle' => 'SaifOmar',
+        'password' => 'password',
     ];
     $account = $action->first($user, $data);
     $this->assertDatabaseHas('accounts', [

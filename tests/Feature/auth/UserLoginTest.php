@@ -10,6 +10,7 @@ test("user can login with valid credentials(email)", function () {
     Account::create([
         "user_id" => $user->id,
         'handle' => "@saifomar",
+        'password' => Hash::make('password'),
     ]);
     $response = $this->postJson("/api/auth/users/login", [
         "identifier" => $user->email,
@@ -25,6 +26,7 @@ test("user can login with valid credentials(handle)", function () {
     $account = Account::create([
         "user_id" => $user->id,
         'handle' => "@saifomar",
+        'password' => Hash::make('password'),
     ]);
     $response = $this->postJson("/api/auth/users/login", [
         "identifier" => $account->handle,
@@ -33,7 +35,7 @@ test("user can login with valid credentials(handle)", function () {
     $response->assertStatus(200);
     $response->assertJsonStructure(["success", "access"]);
 });
-test("user can login with invalid credentials", function () {
+test("user can't login with invalid credentials", function () {
     $user = User::factory()->create();
     $response = $this->postJson("/api/auth/users/login", [
         "identifier" => $user->email,
@@ -47,6 +49,7 @@ test("rate limitid users can't loign", function () {
     $account = Account::create([
         "user_id" => $user->id,
         'handle' => "@saifomar",
+        'password' => Hash::make('password'),
     ]);
     for ($i = 0; $i < 5; $i++) {
         $response = $this->postJson("/api/auth/users/login", [

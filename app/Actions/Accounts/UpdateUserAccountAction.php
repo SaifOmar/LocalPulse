@@ -5,6 +5,7 @@ namespace App\Actions\Accounts;
 use App\Helpers\Helpers;
 use App\Models\Account;
 use Illuminate\Support\Arr;
+use App\Actions\Accounts\HandleUserMediaAction;
 
 class UpdateUserAccountAction
 {
@@ -16,11 +17,15 @@ class UpdateUserAccountAction
     }
     public function updateUserAccount(Account $account, array $data): Account
     {
+        $avatar = Arr::pull($data, 'avatar');
         $data = Arr::only($data, ['gender', 'avatar', 'handle', 'bio']);
         $account->update([
             ...$data,
             ...isset($data['handle']) ? ['handle' => Helpers::createHandle($data['handle'])] : []
         ]);
+        if ($avatar) {
+            (new HandleUserMediaAction())->store($account, $avatar, 'avatars/' . $account->id);
+        }
         return $account;
     }
     public function updateMixed(Account $account, array $data): Account

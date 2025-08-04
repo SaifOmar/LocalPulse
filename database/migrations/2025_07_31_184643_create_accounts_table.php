@@ -16,6 +16,7 @@ return new class () extends Migration {
             $table->string('handle')->unique();
             $table->text('bio')->nullable();
             $table->boolean('first')->default(false);
+            $table->string('password');
             $table->enum('gender', ['male', 'female'])->nullable();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->integer("num_followers")->default(0);
