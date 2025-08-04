@@ -6,6 +6,7 @@ use App\Models\Account;
 use App\Actions\Pulses\CreatePulseAction;
 use App\Http\Requests\StorePulseRequest;
 use App\Http\Requests\UpdatePulseRequest;
+use App\Http\Resources\PulseResource;
 use App\Models\Pulse;
 
 use function response;
@@ -35,9 +36,9 @@ class PulseController extends Controller
     {
         $account = Account::find($request->account_id);
         $data = $action->store($account, $request->all());
-        return response()->json([
-            'data' => $data,
-        ])->setStatusCode(201);
+        return response()->json(
+            new PulseResource($data)
+        )->setStatusCode(201);
     }
 
     /**

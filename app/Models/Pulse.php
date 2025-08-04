@@ -16,6 +16,11 @@ class Pulse extends Model
     {
         return $this->belongsTo(Account::class);
     }
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class, 'pulse_tags');
+    }
     public function comments()
     {
     }

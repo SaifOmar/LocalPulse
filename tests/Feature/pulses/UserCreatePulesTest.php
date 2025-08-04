@@ -15,10 +15,10 @@ describe('User create pulses tests', function () {
             'password' => Hash::make('password'),
         ]);
     });
-    it('can create pulse', function () {
+
+    it('can create pulse ', function () {
         $response = $this->postJson('/api/pulses/store', [
             'caption' => 'test',
-            'tags' => ['tag1', 'tag2'],
             'type' => 'image',
             // HACK: this is just to get around doing the jwt stuff for now
             'account_id' => $this->account->id,
@@ -26,7 +26,6 @@ describe('User create pulses tests', function () {
             'media' =>  UploadedFile::fake()->image('avatar.png', 1024, 1024)->size(1024),
         ]);
         $response->assertStatus(201);
-        dump($response->json());
         $response->assertJsonStructure([
             'data' => [
             'id',
@@ -37,5 +36,31 @@ describe('User create pulses tests', function () {
             ]
         ]);
     });
+    it('can create pulse with tags', function () {
+        $response = $this->postJson('/api/pulses/store', [
+            'caption' => 'test',
+            'tags' => ['tag1', 'tag2'],
+            'type' => 'image',
+            'account_id' => $this->account->id,
+            'media' =>  UploadedFile::fake()->image('avatar.png', 1024, 1024)->size(1024),
+        ]);
+        $response->assertStatus(201);
+        $response->assertJsonStructure([
+            'data' => [
+            'id',
+            'account_id',
+            'type',
+            'caption',
+            'tags' => [
+            '*' => [
+                'name',
+                'slug',
+            ],
+        ],
+            'url',
+            ]
+        ]);
+    });
+
 
 });

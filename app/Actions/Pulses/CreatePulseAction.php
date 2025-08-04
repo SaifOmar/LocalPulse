@@ -2,6 +2,7 @@
 
 namespace App\Actions\Pulses;
 
+use App\Actions\Pulses\CreateTagAction;
 use App\Models\Account;
 use App\Models\Image;
 use App\Models\Pulse;
@@ -18,6 +19,7 @@ class CreatePulseAction
     {
         $media = Arr::pull($data, 'media');
         $type = Arr::get($data, 'type');
+        $tags = Arr::pull($data, 'tags');
         $destinationPath = 'public/pulses/images';
 
         $model = Image::class;
@@ -40,6 +42,13 @@ class CreatePulseAction
             'type' => $data['type'],
             'url' => $url,
         ]);
+        $action = new CreateTagAction();
+        if ($tags) {
+            foreach ($tags as $tag) {
+                $tag = $action->store($tag);
+                $pulse->tags()->attach($tag);
+            }
+        }
         return $pulse;
     }
 }
