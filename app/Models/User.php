@@ -100,4 +100,14 @@ class User extends Authenticatable
     {
         return $this->getFirstAccountAttribute()->image;
     }
+
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }
