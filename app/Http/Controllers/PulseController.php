@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Account;
 use App\Actions\Pulses\CreatePulseAction;
+use App\Actions\Pulses\UpdatePulseAction;
 use App\Http\Requests\StorePulseRequest;
 use App\Http\Requests\UpdatePulseRequest;
 use App\Http\Resources\PulseResource;
@@ -18,15 +19,11 @@ class PulseController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $pulses = Pulse::latest()->get(); // Or use paginate() if needed
+        dump($data = PulseResource::collection($pulses));
+        return response()->json(
+            $data
+        )->setStatusCode(200);
     }
 
     /**
@@ -34,8 +31,7 @@ class PulseController extends Controller
      */
     public function store(StorePulseRequest $request, CreatePulseAction $action)
     {
-        $account = Account::find($request->account_id);
-        $data = $action->store($account, $request->all());
+        $data = $action->store($request->user()->getActiveAccount(), $request->all());
         return response()->json(
             new PulseResource($data)
         )->setStatusCode(201);
@@ -49,20 +45,16 @@ class PulseController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Pulse $pulse)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePulseRequest $request, Pulse $pulse)
+    public function update(UpdatePulseRequest $request, Pulse $pulse, UpdatePulseAction $action)
     {
-        //
+        $pulse = $action->update($pulse, $request->validated());
+        return response()->json(
+            new PulseResource($pulse)
+        )->setStatusCode(200);
     }
 
     /**
@@ -70,6 +62,7 @@ class PulseController extends Controller
      */
     public function destroy(Pulse $pulse)
     {
-        //
+        $pulse->delete();
+        return response()->json()->setStatusCode(200);
     }
 }

@@ -11,7 +11,7 @@ class UpdatePulseRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return auth()->check();
     }
 
     /**
@@ -22,7 +22,8 @@ class UpdatePulseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'caption' => ['nullable', 'string', 'max:255'],
+            'tags' => ['nullable', 'array'],
         ];
     }
 }

@@ -12,11 +12,11 @@ class Helpers
         $handle = strtolower(trim($handle));
         return str_starts_with($handle, '@') ? $handle : "@{$handle}";
     }
-    public static function createUserToken(User $user, string $meta, $type = 'handle'): string
+    public static function createUserToken(User $user, string $meta, $type = 'handle', $expr = null): string
     {
-        return $user->createToken('access-'. $type . ':' . $meta, ['*'], now()->addDays(30))->plainTextToken;
+        return $user->createToken('access-'. $type . ':' . $meta, ['*'], $expr ??  now()->addDays(30))->plainTextToken;
     }
-    public static function getUserAuthAccount(string $token): Account
+    public static function getUserAuthAccount(string $token): ?Account
     {
         $account_handle = explode(":", $token);
         return Account::where('handle', $account_handle[1])->first();

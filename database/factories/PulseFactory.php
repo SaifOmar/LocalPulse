@@ -1,0 +1,26 @@
+<?php
+
+namespace Database\Factories;
+
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Pulse>
+ */
+class PulseFactory extends Factory
+{
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
+    public function definition(): array
+    {
+        return [
+            'account_id' => 1,
+            'caption' => 'Test',
+            'type' => 'image',
+            'url' => 'https://example.com/test.png',
+        ];
+    }
+}

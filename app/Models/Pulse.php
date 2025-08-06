@@ -2,11 +2,16 @@
 
 namespace App\Models;
 
+use App\Policies\PulsePolicy;
+use Illuminate\Database\Eloquent\Attributes\UsePolicy;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+#[UsePolicy(PulsePolicy::class)]
 class Pulse extends Model
 {
+    use HasFactory;
     //
     public function user(): User
     {

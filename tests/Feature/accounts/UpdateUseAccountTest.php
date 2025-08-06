@@ -161,5 +161,4 @@ test("test auth test", function () {
         'Authorization' => 'Bearer ' . $token->plainTextToken,
     ])->getJson('api/test/auth');
     $response->assertStatus(200);
-    dump($response->json());
 })->skip();

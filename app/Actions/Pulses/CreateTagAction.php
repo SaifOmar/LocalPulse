@@ -7,12 +7,12 @@ use Illuminate\Support\Str;
 
 class CreateTagAction
 {
-    public function store(string $name): Tag
+    public function store(string $name): ?Tag
     {
         $tag_name = $this->normalizeTag($name);
         $tag_slug = Str::slug($tag_name);
         if ($tag = Tag::where('slug', $tag_slug)->first()) {
-            return $tag;
+            return null;
         }
         $tag = Tag::create([
             'name' => $name,
