@@ -15,7 +15,6 @@ use Illuminate\Validation\ValidationException;
 
 class AccountController extends Controller
 {
-
     /**
      * Store a newly created resource in storage.
      */

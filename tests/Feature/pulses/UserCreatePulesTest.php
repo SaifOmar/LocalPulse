@@ -3,6 +3,7 @@
 uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
 
 use App\Models\Account;
+use App\Helpers\Helpers;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
 
@@ -13,6 +14,10 @@ describe('User create pulses tests', function () {
             'user_id' => $this->user->id,
             'handle' => '@saifomar',
             'password' => Hash::make('password'),
+        ]);
+        $token = Helpers::createUserToken($this->user, $this->account->handle);
+        $this->withHeaders([
+            "Authorization" => "Bearer " . $token,
         ]);
     });
 

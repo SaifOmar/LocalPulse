@@ -7,11 +7,13 @@ use App\Http\Requests\UserRegiserRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use App\Http\Resources\UserResource;
-use Illuminate\Support\Facades\Hash;
+// use Illuminate\Support\Facades\Hash;
 use App\Actions\Accounts\CreateUserAccountAction;
-use Illuminate\Support\Facades\RateLimiter;
+use App\Helpers\Helpers;
+// use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
-use Ramsey\Collection\Collection;
+
+// use Ramsey\Collection\Collection;
 
 class RegisterUserController extends Controller
 {
@@ -26,7 +28,7 @@ class RegisterUserController extends Controller
 
             $account = $action->first($user, $request->payload());
 
-            $token = $user->createToken('access' . $account->handle)->plainTextToken;
+            $token = Helpers::createUserToken($user, $account->handle);
 
             $user->access = $token;
 

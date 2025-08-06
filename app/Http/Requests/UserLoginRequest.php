@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use App\Helpers\Helpers;
 
 class UserLoginRequest extends FormRequest
 {
@@ -44,10 +45,10 @@ class UserLoginRequest extends FormRequest
                 'error' => ['The provided credentials are incorrect.'],
             ]);
         }
-        $email = $account->user->email;
         RateLimiter::clear($this->throttleKey());
+        return Helpers::createUserToken($account->user, $account->handle);
         // $account = Account::where("user_id", User::where("email", $email)->first()->id)->first();
-        return User::where("email", $email)->first()->createToken('access' . $account->handle)->plainTextToken;
+        // return User::where("email", $email)->first()->createToken('access' . $account->handle)->plainTextToken;
     }
     public function authAttempt(Account $account, string $password): bool
     {

@@ -9,7 +9,7 @@ function createUri($id)
 {
     return 'api/auth/accounts/' . $id . '/update';
 }
-
+//
 test('user can update account specific data', function () {
     $user = User::factory()->create();
 
@@ -18,8 +18,14 @@ test('user can update account specific data', function () {
         'handle' => 'SaifOmar',
         'password' => Hash::make('password'),
     ]);
+    $token = $user->createToken('test-token'.$account->id);
 
-    $response = $this->putJson(
+    // $response = $this->withHeaders([
+    //     'Authorization' => 'Bearer ' . $token->plainTextToken,
+    // ])->getJson('api/test/auth');
+    $response = $this->withHeaders([
+        'Authorization' => 'Bearer ' . $token->plainTextToken,
+    ])->putJson(
         createUri($account->id),
         [
             'handle' => 'dSaifOmar',
@@ -49,7 +55,12 @@ test('user can update user specific data', function () {
         'password' => Hash::make('password'),
     ]);
 
-    $response = $this->putJson(
+
+    $token = $user->createToken('test-token'.$account->id);
+
+    $response = $this->withHeaders([
+        'Authorization' => 'Bearer ' . $token->plainTextToken,
+    ])-> putJson(
         createUri($account->id),
         [
             'first_name' => 'dSaif',
@@ -78,7 +89,10 @@ test('user can update mixed data', function () {
         'password' => Hash::make('password'),
     ]);
 
-    $response = $this->putJson(
+    $token = $user->createToken('test-token'.$account->id);
+    $response = $this->withHeaders([
+        'Authorization' => 'Bearer ' . $token->plainTextToken,
+    ])->putJson(
         createUri($account->id),
         [
             'first_name' => 'dSaif',
@@ -117,7 +131,10 @@ test("user can't update with a taken handle", function () {
         'password' => Hash::make('password'),
     ]);
 
-    $response = $this->putJson(
+    $token = $user->createToken('test-token'.$account->id);
+    $response = $this->withHeaders([
+        'Authorization' => 'Bearer ' . $token->plainTextToken,
+    ])->putJson(
         createUri($account2->id),
         [
             'first_name' => 'dSaif',
@@ -131,3 +148,18 @@ test("user can't update with a taken handle", function () {
 
     $response->assertStatus(422);
 });
+
+test("test auth test", function () {
+    $user = User::factory()->create();
+    $account = Account::create([
+        'user_id' => $user->id,
+        'handle' => 'SaifOmar',
+        'password' => Hash::make('password'),
+    ]);
+    $token = $user->createToken('test-token-'.$account->id);
+    $response = $this->withHeaders([
+        'Authorization' => 'Bearer ' . $token->plainTextToken,
+    ])->getJson('api/test/auth');
+    $response->assertStatus(200);
+    dump($response->json());
+})->skip();

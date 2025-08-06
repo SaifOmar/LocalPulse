@@ -2,6 +2,7 @@
 
 uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
 
+use App\Helpers\Helpers;
 use App\Models\Account;
 use App\Models\Comment;
 use App\Models\User;
@@ -21,6 +22,10 @@ describe("User can like pulses", function () {
             'caption' => 'test',
             'type' => 'image',
             // 'media' =>  UploadedFile::fake()->image('avatar.png', 1024, 1024)->size(1024),
+        ]);
+        $token = Helpers::createUserToken($this->user, $this->account->handle);
+        $this->withHeaders([
+            'Authorization' => 'Bearer ' . $token,
         ]);
     });
     it('can like pulse', function () {
