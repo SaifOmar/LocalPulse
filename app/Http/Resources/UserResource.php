@@ -14,19 +14,18 @@ class UserResource extends JsonResource
      *
      * @return array<string, mixed>
      */
-    public function __construct(User $user, public Account $account)
+    public function __construct(User $user, public Account $account, public string $token)
     {
         parent::__construct($user);
     }
     public function toArray(Request $request): array
     {
-
         $arr = new AccountResource($this->account)->toArray($request);
         return [
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'email' => $this->email,
-            'access' => $this->access,
+            'access' => $this->token,
             ...$arr
         ];
     }
