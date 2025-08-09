@@ -5,17 +5,57 @@ use App\Http\Controllers\Auth\LoginUserController;
 use App\Http\Controllers\Auth\RegisterUserController;
 use App\Http\Resources\AccountResource;
 use App\Models\Account;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use App\Helpers\Helpers;
+use App\Http\Controllers\Auth\ResetPasswordController;
 use Illuminate\Support\Facades\Route;
 
-// user prefexis
-Route::post("auth/users/register", RegisterUserController::class);
-Route::post("auth/users/login", LoginUserController::class);
+Route::prefix("auth")->group(function () {
+    // user prefexis
+    //
+    Route::prefix("users")->group(function () {
+        Route::post("/register", RegisterUserController::class);
+        Route::post("/login", LoginUserController::class);
+    });
+    // user prefexis
 
-Route::delete("auth/accounts/{account}/delete", [AccountController::class, "destroy"]);
-Route::put("auth/accounts/{account}/update", [AccountController::class, "update"])->middleware("auth:sanctum");
-// Route::delete("auth/users/{account}/delete", [AccountController::class, "destroy"]);
+    Route::prefix("accounts")->group(function () {
+        Route::delete("/{account}/delete", [AccountController::class, "destroy"]);
+        Route::put("/{account}/update", [AccountController::class, "update"])->middleware("auth:sanctum");
+        Route::post("/{account}/password/update", [ResetPasswordController::class , 'reset'])->middleware("auth:sanctum");
+        Route::post("/{account}/password/update-v2", function (Request $request, Account $account) {
+            dump($request, $account->handle);
+            return response()->json([
+                'message' => 'password updated successfully',
+            ])->setStatusCode(200);
+        });
+    });
+});
 
 
+
+// Route::get("auth/accounts/reset-test", function () {
+//     $user = User::factory()->create();
+//     $account = Account::createOrFirst([
+//         'handle' => "@saifomar",
+//     ], [
+//         "user_id" => $user->id,
+//         'handle' => "@saifomar",
+//         'password' => Hash::make('password'),
+//     ]);
+//     $token = Helpers::createUserToken($user, $account->handle);
+//     // return response()->json([
+//     //     'token' => $token,
+//     //     'account' => $account,
+//     // ])->setStatusCode(200);
+//     $action = new \App\Actions\Accounts\UserUpdatePasswordAction();
+//     $reset_token = $action->sendPasswordResetLink($account);
+//     return response()->json([
+//         'token' => $reset_token,
+//         'account' => $account,
+//     ])->setStatusCode(200);
+// });
 
 
 Route::get("test/auth", function () {

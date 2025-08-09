@@ -21,4 +21,15 @@ class Helpers
         $account_handle = explode(":", $token);
         return Account::where('handle', $account_handle[1])->first();
     }
+    public static function generateInteractionData($account, $pulse, $type, $meta = null): array
+    {
+
+        return  [
+             'account_id' => $account->id,
+             'pulse_id' => $pulse,
+             'type' => $type,
+             'delta' => $delta ?? null,
+             'meta' => $meta ?? null,
+        ];
+    }
 }

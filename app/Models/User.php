@@ -117,4 +117,9 @@ class User extends Authenticatable
         $token = $this->currentAccessToken()->name;
         return Helpers::getUserAuthAccount($token) ?? null;
     }
+    // not sure if this is gonna be worked on any time soon
+    public function Interactions()
+    {
+        return $this->hasMany(Interaction::class);
+    }
 }

@@ -15,27 +15,36 @@ class CreateUserAccountAction
 {
     public function first(User $user, array $data): Account
     {
-        return $this->createAccount($user, array_merge(['first' => true], $data));
+        return $this->createAccount(
+            $user,
+            array_merge(["first" => true], $data),
+        );
     }
     public function afterFirst(User $user, array $data): Account
     {
-        return $this->createAccount($user, array_merge(['first' => false], $data));
+        return $this->createAccount(
+            $user,
+            array_merge(["first" => false], $data),
+        );
     }
 
     private function createAccount(User $user, array $data): Account
     {
-
-        $avatar = Arr::pull($data, 'avatar');
+        $avatar = Arr::pull($data, "avatar");
         $account = Account::create([
-            'user_id' => $user->id,
-            ...Arr::except($data, ['handle']),
-            'handle' => Helpers::createHandle($data['handle']),
-            'password' => Hash::make($data['password']),
+            "user_id" => $user->id,
+            ...Arr::except($data, ["handle"]),
+            "handle" => Helpers::createHandle($data["handle"]),
+            "password" => Hash::make($data["password"]),
         ]);
 
         if ($avatar) {
-            $destinsationPath = 'avatars/' . $account->id;
-            (new HandleUserMediaAction())->store($account, $avatar, $destinsationPath);
+            $destinsationPath = "avatars/" . $account->id;
+            new HandleUserMediaAction()->store(
+                $account,
+                $avatar,
+                $destinsationPath,
+            );
         }
 
         return $account;

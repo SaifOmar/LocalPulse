@@ -61,4 +61,5 @@ class AccountController extends Controller
         $account->delete();
         return response()->json(["message" => "Account deleted sad to see you go, rememeber you can always come back to us within 30 days"], 204);
     }
+
 }

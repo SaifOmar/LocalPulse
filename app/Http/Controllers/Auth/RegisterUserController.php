@@ -15,13 +15,15 @@ use Mail;
 
 class RegisterUserController extends Controller
 {
-    public function __invoke(UserRegiserRequest $request, CreateUserAccountAction $action): JsonResponse
-    {
+    public function __invoke(
+        UserRegiserRequest $request,
+        CreateUserAccountAction $action,
+    ): JsonResponse {
         try {
             $user = User::create([
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'email' => $request->email,
+                "first_name" => $request->first_name,
+                "last_name" => $request->last_name,
+                "email" => $request->email,
             ]);
 
             $account = $action->first($user, $request->payload());
@@ -30,9 +32,13 @@ class RegisterUserController extends Controller
 
             Mail::to($user)->send(new UserRegisteredMail($account, $user));
 
-            return response()->json(new UserResource($user, $account, $token))->setStatusCode(201);
+            return response()
+                ->json(new UserResource($user, $account, $token))
+                ->setStatusCode(201);
         } catch (\Exception $e) {
-            throw ValidationException::withMessages([['error' => $e->getMessage()]]);
+            throw ValidationException::withMessages([
+                ["error" => $e->getMessage()],
+            ]);
         }
     }
 }

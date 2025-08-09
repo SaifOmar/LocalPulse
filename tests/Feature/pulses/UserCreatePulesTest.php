@@ -22,7 +22,7 @@ describe('User create pulses tests', function () {
     });
 
     it('can create pulse ', function () {
-        $response = $this->postJson('/api/pulses/store', [
+        $response = $this->postJson('/api/pulses', [
             'caption' => 'test',
             'type' => 'image',
             // HACK: this is just to get around doing the jwt stuff for now
@@ -42,7 +42,7 @@ describe('User create pulses tests', function () {
         ]);
     });
     it('can create pulse with tags', function () {
-        $response = $this->postJson('/api/pulses/store', [
+        $response = $this->postJson('/api/pulses', [
             'caption' => 'test',
             'tags' => ['tag1', 'tag2'],
             'type' => 'image',

@@ -6,6 +6,7 @@ use App\Helpers\Helpers;
 use App\Models\Account;
 use App\Models\Comment;
 use App\Models\User;
+use App\Models\Like;
 use App\Models\Pulse;
 use Illuminate\Http\UploadedFile;
 
@@ -29,7 +30,7 @@ describe("User can like pulses", function () {
         ]);
     });
     it('can like pulse', function () {
-        $response = $this->postJson('/api/likes/store', [
+        $response = $this->postJson('/api/likes', [
             'pulse_id' => $this->pulse->id,
             'account_id' => $this->account->id,
             'type' => 'pulse_like',
@@ -49,7 +50,7 @@ describe("User can like pulses", function () {
             'content' => 'test',
             'type' => 'comment_comment',
         ]);
-        $response = $this->postJson('/api/likes/store', [
+        $response = $this->postJson('/api/likes', [
             'pulse_id' => $this->pulse->id,
             'account_id' => $this->account->id,
             'type' => 'comment_like',
@@ -71,14 +72,14 @@ describe("User can like pulses", function () {
             'content' => 'test',
             'type' => 'comment_comment',
         ]);
-        $response = $this->postJson('/api/likes/store', [
+        $response = $this->postJson('/api/likes', [
             'pulse_id' => $this->pulse->id,
             'account_id' => $this->account->id,
             'type' => 'comment_like',
             'comment_id' => $comment->id,
         ]);
         $response->assertStatus(201);
-        $response = $this->postJson('/api/likes/store', [
+        $response = $this->postJson('/api/likes', [
             'pulse_id' => $this->pulse->id,
             'account_id' => $this->account->id,
             'type' => 'comment_like',
@@ -87,10 +88,15 @@ describe("User can like pulses", function () {
         $response->assertStatus(422);
     });
     it('can dislike pulse', function () {
-        $response = $this->deleteJson('/api/likes/.$this->pulse->id./delete', [
+        $like = Like::create([
             'pulse_id' => $this->pulse->id,
             'account_id' => $this->account->id,
-            'type' => 'pulse_dislike',
+            'type' => 'pulse_like',
+        ]);
+        $response = $this->deleteJson('/api/likes', [
+            'pulse_id' => $this->pulse->id,
+            'account_id' => $this->account->id,
+            'type' => 'pulse_like',
         ]);
         $response->assertStatus(200);
     });

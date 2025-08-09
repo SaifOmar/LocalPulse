@@ -34,4 +34,8 @@ class Pulse extends Model
     {
         return $this->hasMany(Like::class);
     }
+    public function interactions()
+    {
+        return $this->hasMany(Interaction::class);
+    }
 }

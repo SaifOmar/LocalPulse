@@ -26,7 +26,7 @@ describe('User update pulses tests', function () {
     });
 
     it('can update pulse ', function () {
-        $response = $this->putJson("api/pulses/{$this->pulse->id}/update", [
+        $response = $this->putJson("api/pulses/{$this->pulse->id}", [
             'caption' => 'test_testCaption',
         ]);
         $response->assertStatus(200);
@@ -42,7 +42,7 @@ describe('User update pulses tests', function () {
     });
 
     it('can update pulse with tags', function () {
-        $response = $this->putJson("api/pulses/{$this->pulse->id}/update", [
+        $response = $this->putJson("api/pulses/{$this->pulse->id}", [
             'caption' => 'test_testCaption',
             'tags' => ['tag11', 'tag2'],
         ]);
@@ -65,7 +65,7 @@ describe('User update pulses tests', function () {
     });
 
     it('can update pulse with the same tags without recreation', function () {
-        $response = $this->putJson("api/pulses/{$this->pulse->id}/update", [
+        $response = $this->putJson("api/pulses/{$this->pulse->id}", [
             'caption' => 'test_testCaption',
             'tags' => ['tag11', 'tag11'],
         ]);

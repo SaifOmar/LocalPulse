@@ -28,7 +28,7 @@ describe("User can comment pulses", function () {
         ]);
     });
     it('can comment on pulse', function () {
-        $response = $this->postJson('/api/comments/store', [
+        $response = $this->postJson('/api/comments', [
             'pulse_id' => $this->pulse->id,
             'account_id' => $this->account->id,
             'content' => 'test',
@@ -48,7 +48,7 @@ describe("User can comment pulses", function () {
             'content' => 'test',
             'type' => 'comment_comment',
         ]);
-        $response = $this->deleteJson('/api/comments/'. $comment->id. '/delete');
+        $response = $this->deleteJson('/api/comments/'. $comment->id);
         $response->assertStatus(200);
     });
 });

@@ -36,11 +36,12 @@ class CreatePulseAction
             'path' => $fileName,
             'account_id' => $account->id,
         ]);
+        // dd($data);
         $pulse = Pulse::create([
             'account_id' => $account->id,
-            'caption' => $data['caption'],
-            'type' => $data['type'],
-            'url' => $url,
+            'caption' => $data['caption'] ?? null,
+            'type' => $data['type'] ?? null,
+            'url' => $url ?? null,
         ]);
         $action = new CreateTagAction();
         if ($tags) {
