@@ -13,20 +13,31 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/', [PulseController::class, 'store'])->middleware("can:create,".  Pulse::class);
         Route::put('/{pulse}', [PulseController::class, 'update'])->middleware("can:update,pulse");
         Route::delete('/{pulse}', [PulseController::class, 'destroy'])->middleware("can:delete,pulse");
-    })->middleware(['throttle:60,1']);
+    });
 
     Route::prefix('/likes')->group(function () {
         Route::post('/', [LikeController::class, 'store']);
+        // TODO: add policy middleware
         Route::delete('/', [LikeController::class, 'destroy']);
     });
+
     Route::prefix('/comments')->group(function () {
         Route::post('/', [CommentController::class, 'store']);
+        // TODO: add policy middleware
         Route::put('/{comment}', [CommentController::class, 'update']);
         Route::delete('/{comment}', [CommentController::class, 'destroy']);
     });
-});
+})->middleware(['throttle:60,1']);
 Route::get("/interactions", function () {
-    $interactions = Interaction::latest()->get()->toArray();
+    $interactions = Interaction::all()->toArray();
+    return response()->json(
+        $interactions
+    )
+        ->setStatusCode(200);
+});
+
+Route::get("/jobs", function () {
+    $interactions = DB::table('jobs')->select()->get()->toArray();
     return response()->json(
         $interactions
     )

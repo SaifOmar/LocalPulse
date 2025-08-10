@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ProcessInteraction;
 use App\Models\Pulse;
 use App\Models\Comment;
 use Illuminate\Validation\ValidationException;
 use App\Http\Requests\StoreCommentRequest;
 use App\Http\Requests\UpdateCommentRequest;
+use App\Helpers\Helpers;
 
 class CommentController extends Controller
 {
@@ -33,8 +35,17 @@ class CommentController extends Controller
     {
         try {
             $data = $request->validated();
+            $account = Helpers::getUserAuthAccount($request->user()->currentAccessToken()->name);
             $comment = Comment::create($data);
-            return response()->json($data)->setStatusCode(201);
+            $meta = [
+                'commented_by' => $account->id,
+                'creation_comment_count' => Pulse::find($data['pulse_id'])->comments()->count(),
+            ];
+            ProcessInteraction::dispatch(
+                Helpers::generateInteractionData($account, $data['pulse_id'], 'comment', $meta)
+            );
+            return response()->json($comment->toArray())->setStatusCode(201);
+
         } catch (\Exception $e) {
             throw ValidationException::withMessages(
                 ['message' => $e->getMessage()]
@@ -44,23 +55,24 @@ class CommentController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(UpdateCommentRequest $request, Comment $comment)
     {
         //
         try {
+            $account = Helpers::getUserAuthAccount($request->user()->currentAccessToken()->name);
             $data = $request->validated();
             $comment->update($data);
-            return response()->json($comment);
+            $meta = [
+                'commented_by' => $account->id,
+                'creation_comment_count' => Pulse::find($data['pulse_id'])->comments()->count(),
+                'updated_at' => now(),
+            ];
+            ProcessInteraction::dispatch(
+                Helpers::generateInteractionData($account, $data['pulse_id'], 'comment', $meta)
+            );
+            return response()->json($comment->toArray())->setStatusCode(201);
         } catch (\Exception $e) {
             throw ValidationException::withMessages(
                 ['message' => $e->getMessage()]

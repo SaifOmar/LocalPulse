@@ -1,0 +1,48 @@
+###
+
+POST http://127.0.0.1:8000/api/comments HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer 2|HoEavgwSj1iwEtn4vyaG8pNdIIYyITPAHNW1u5Bp9cc26eed
+
+{
+  "account_id": 1,
+  "content": "this is a comment",
+  "pulse_id": 1,
+  "type": "pulse_comment"
+}
+
+
+###
+
+GET http://127.0.0.1:8000/api/interactions HTTP/1.1
+
+
+###
+
+PUT http://127.0.0.1:8000/api/comments/5 HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer 2|HoEavgwSj1iwEtn4vyaG8pNdIIYyITPAHNW1u5Bp9cc26eed
+
+{
+  "account_id": 1,
+  "content": "this is a comment again",
+  "pulse_id": 1,
+  "type": "pulse_comment"
+}
+
+
+###
+
+DELETE http://127.0.0.1:8000/api/comments/1 HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer 2|HoEavgwSj1iwEtn4vyaG8pNdIIYyITPAHNW1u5Bp9cc26eed
+
+
+###
+
+GET http://127.0.0.1:8000/api/jobs HTTP/1.1
+Content-Type: application/json
+Accept: application/json

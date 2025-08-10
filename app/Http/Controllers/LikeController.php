@@ -55,7 +55,6 @@ class LikeController extends Controller
                 );
                 return response()->json()->setStatusCode(200);
             }
-
             return response()->json(['error' => "deletion failed"])->setStatusCode(400);
         } catch (\Exception $e) {
             throw ValidationException::withMessages([
