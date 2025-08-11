@@ -4,6 +4,7 @@ uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
 
 use App\Models\Account;
 use App\Helpers\Helpers;
+use App\Models\Mood;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
 
@@ -15,6 +16,7 @@ describe('User create pulses tests', function () {
             'handle' => '@saifomar',
             'password' => Hash::make('password'),
         ]);
+        Mood::factory()->create();
         $token = Helpers::createUserToken($this->user, $this->account->handle);
         $this->withHeaders([
             "Authorization" => "Bearer " . $token,
@@ -25,6 +27,7 @@ describe('User create pulses tests', function () {
         $response = $this->postJson('/api/pulses', [
             'caption' => 'test',
             'type' => 'image',
+            'mood_id' => 1,
             // HACK: this is just to get around doing the jwt stuff for now
             'account_id' => $this->account->id,
             //
@@ -46,6 +49,7 @@ describe('User create pulses tests', function () {
             'caption' => 'test',
             'tags' => ['tag1', 'tag2'],
             'type' => 'image',
+            'mood_id' => 1,
             'account_id' => $this->account->id,
             'media' =>  UploadedFile::fake()->image('avatar.png', 1024, 1024)->size(1024),
         ]);
@@ -66,6 +70,4 @@ describe('User create pulses tests', function () {
             ]
         ]);
     });
-
-
 });

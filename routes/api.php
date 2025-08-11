@@ -28,6 +28,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/{comment}', [CommentController::class, 'destroy']);
     });
 })->middleware(['throttle:60,1']);
+
 Route::get("/interactions", function () {
     $interactions = Interaction::all()->toArray();
     return response()->json(

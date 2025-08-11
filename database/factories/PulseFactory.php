@@ -19,6 +19,7 @@ class PulseFactory extends Factory
         return [
             'account_id' => 1,
             'caption' => 'Test',
+            'mood_id' => 1,
             'type' => 'image',
             'url' => 'https://example.com/test.png',
         ];

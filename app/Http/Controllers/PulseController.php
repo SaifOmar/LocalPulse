@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Account;
 use App\Actions\Pulses\CreatePulseAction;
 use App\Actions\Pulses\UpdatePulseAction;
 use App\Http\Requests\StorePulseRequest;
@@ -36,15 +35,6 @@ class PulseController extends Controller
             new PulseResource($data)
         )->setStatusCode(201);
     }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Pulse $pulse)
-    {
-        //
-    }
-
 
     /**
      * Update the specified resource in storage.

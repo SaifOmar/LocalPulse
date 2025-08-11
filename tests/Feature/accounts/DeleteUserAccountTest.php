@@ -1,18 +1,20 @@
 <?php
 
 use App\Models\Account;
-
 use App\Models\User;
 
 uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
 
 test('user account can be deleted', function () {
-    $email = fake()->safeEmail('saif@gmail.com');
+    $email = fake()->safeEmail();
     $response = $this->post('/api/auth/users/register', [
         'first_name' => 'Saif',
         'last_name' => 'Shaikh',
         'handle' => 'SaifOmar',
         'email' => $email,
+        'longitude' => fake()->longitude(),
+        'latitude' => fake()->latitude(),
+        "accuracy_meters" => fake()->numberBetween(1, 15),
         'password' => 'password',
         "password_confirmation" => "password",
     ]);

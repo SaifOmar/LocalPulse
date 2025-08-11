@@ -5,6 +5,7 @@ uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
 
 use App\Models\Account;
 use App\Helpers\Helpers;
+use App\Models\Mood;
 use App\Models\Pulse;
 use App\Models\User;
 
@@ -20,6 +21,7 @@ describe('User update pulses tests', function () {
         $this->withHeaders([
             "Authorization" => "Bearer " . $token,
         ]);
+        Mood::factory()->create();
         $this->pulse = Pulse::factory()->create([
             'account_id' => $this->account->id,
         ]);

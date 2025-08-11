@@ -40,6 +40,7 @@ class CreatePulseAction
         $pulse = Pulse::create([
             'account_id' => $account->id,
             'caption' => $data['caption'] ?? null,
+            'mood_id' => $data['mood_id'] ?? null,
             'type' => $data['type'] ?? null,
             'url' => $url ?? null,
         ]);

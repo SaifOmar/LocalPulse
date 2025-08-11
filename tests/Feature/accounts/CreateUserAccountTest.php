@@ -12,6 +12,9 @@ test('user account created automatically at registration', function () {
         'last_name' => 'Shaikh',
         'handle' => 'SaifOmar',
         'email' => $email,
+        'longitude' => fake()->longitude(),
+        'latitude' => fake()->latitude(),
+        "accuracy_meters" => fake()->numberBetween(1, 15),
         'password' => 'password',
         "password_confirmation" => "password",
     ]);

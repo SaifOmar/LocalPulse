@@ -15,6 +15,11 @@ return new class () extends Migration {
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email')->unique();
+            $table->decimal('latitude', 10, 8);
+            $table->decimal('longitude', 10, 8);
+            $table->string('country')->nullable();
+            $table->string('city')->nullable();
+            $table->integer('accuracy_meters');
             $table->timestamp('email_verified_at')->nullable();
             // $table->string('password');
             $table->rememberToken();

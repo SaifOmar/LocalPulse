@@ -8,7 +8,6 @@ use App\Models\Account;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateAccountRequest;
 use App\Http\Requests\UpdateAccountRequest;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\AccountResource;
 use Illuminate\Validation\ValidationException;

@@ -7,8 +7,8 @@ use App\Models\Account;
 use App\Models\Comment;
 use App\Models\User;
 use App\Models\Like;
+use App\Models\Mood;
 use App\Models\Pulse;
-use Illuminate\Http\UploadedFile;
 
 describe("User can like pulses", function () {
     beforeEach(function () {
@@ -18,9 +18,11 @@ describe("User can like pulses", function () {
             'handle' => '@saifomar',
             'password' => Hash::make('password'),
         ]);
+        Mood::factory()->create();
         $this->pulse = Pulse::create([
             'account_id' => $this->account->id,
             'caption' => 'test',
+            'mood_id' => 1,
             'type' => 'image',
             // 'media' =>  UploadedFile::fake()->image('avatar.png', 1024, 1024)->size(1024),
         ]);

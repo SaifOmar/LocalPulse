@@ -22,7 +22,7 @@ class StorePulseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            "mood_id" => "required",
         ];
     }
 }

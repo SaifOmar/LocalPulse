@@ -4,6 +4,7 @@ uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
 
 use App\Models\Account;
 use App\Models\User;
+use App\Models\Mood;
 use App\Helpers\Helpers;
 use App\Models\Pulse;
 use App\Models\Comment;
@@ -16,9 +17,12 @@ describe("User can comment pulses", function () {
             'handle' => '@saifomar',
             'password' => Hash::make('password'),
         ]);
+
+        Mood::factory()->create();
         $this->pulse = Pulse::create([
             'account_id' => $this->account->id,
             'caption' => 'test',
+            'mood_id' => 1,
             'type' => 'image',
             // 'media' =>  UploadedFile::fake()->image('avatar.png', 1024, 1024)->size(1024),
         ]);

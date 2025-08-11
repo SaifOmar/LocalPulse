@@ -14,6 +14,7 @@ return new class () extends Migration {
             $table->id();
             $table->foreignIdFor(App\Models\Account::class)->constrained()->cascadeOnDelete();
             $table->text('caption')->nullable();
+            $table->foreignIdFor(App\Models\Mood::class)->constrained()->nullOnDelete()->cascadeOnUpdate();
             $table->enum('type', ['image','video'])->default("image");
             $table->string('url')->nullable();
             $table->timestamps();
