@@ -21,15 +21,22 @@ Route::prefix("auth")->group(function () {
     // user prefexis
 
     Route::prefix("accounts")->group(function () {
-        Route::delete("/{account}/delete", [AccountController::class, "destroy"]);
-        Route::put("/{account}/update", [AccountController::class, "update"])->middleware("auth:sanctum");
-        Route::post("/{account}/password/update", [ResetPasswordController::class , 'reset'])->middleware("auth:sanctum");
-        Route::post("/{account}/password/update-v2", function (Request $request, Account $account) {
-            dump($request, $account->handle);
-            return response()->json([
-                'message' => 'password updated successfully',
-            ])->setStatusCode(200);
+        // test
+        Route::get('/accounts', function () {
+            $accounts = Account::all();
+            return response()->json($accounts)->setStatusCode(200);
         });
+
+        Route::get("/{account:id}", [AccountController::class, "show"]);
+        Route::put("/{account:id}/update", [AccountController::class, "update"])->middleware("auth:sanctum");
+        Route::post("/{account:id}/password/update", [ResetPasswordController::class, 'reset'])->middleware("auth:sanctum");
+        Route::delete("/{account:id}/delete", [AccountController::class, "destroy"]);
+        // Route::post("/{account:id}/password/update-v2", function (Request $request, Account $account) {
+        //     dump($request, $account->handle);
+        //     return response()->json([
+        //         'message' => 'password updated successfully',
+        //     ])->setStatusCode(200);
+        // });
     });
 });
 

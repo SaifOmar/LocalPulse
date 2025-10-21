@@ -34,8 +34,11 @@ class UserRegiserRequest extends FormRequest
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'handle' => ['required', 'string', 'max:255', new UniqueHandle($this->route('account')?->id)],
+            'longitude' => ['required', 'numeric', 'min:-180', 'max:180'],
+            'latitude' => ['required', 'numeric', 'min:-90', 'max:90'],
+            'accuracy_meters' => ['required', 'numeric', 'min:0', 'max:100'],
+            'gender' => ['required', 'string', 'in:male,female,not specified'],
             'bio' => ['nullable', 'string', 'max:255'],
-            'gender' => ['nullable', 'string', 'max:255'],
             'avatar' => [
                 'nullable',
                 // File::image()
@@ -51,6 +54,6 @@ class UserRegiserRequest extends FormRequest
      */
     public function payload(): array
     {
-        return Arr::except($this->validated(), ['first_name', 'last_name', 'email']);
+        return Arr::except($this->validated(), ['first_name', 'last_name', 'email', 'longitude', 'latitude', 'accuracy_meters']);
     }
 }
