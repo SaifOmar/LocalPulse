@@ -30,8 +30,8 @@ class RegisterUserController extends Controller
                 "longitude" => $request->longitude,
                 "latitude" => $request->latitude,
                 "accuracy_meters" => $request->accuracy_meters,
-                "country" => $city ?? null,
-                "city" => $country ?? null,
+                "country" => $service->city ?? null,
+                "city" => $service->country ?? null,
             ]);
 
             $account = $action->first($user, $request->payload());
