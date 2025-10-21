@@ -19,9 +19,10 @@ class RegisterUserController extends Controller
 {
     public function __invoke(UserRegiserRequest $request, CreateUserAccountAction $action): JsonResponse
     {
-
         Log::info($request);
-        $service = new UserLocationService()->getLocation($request->latitude, $request->longitude);
+        $service = new UserLocationService();
+        $service->getLocation($request->longitude, $request->latitude);
+        Log::info($service);
         try {
             $user = User::create([
                 "first_name" => $request->first_name,
@@ -30,8 +31,8 @@ class RegisterUserController extends Controller
                 "longitude" => $request->longitude,
                 "latitude" => $request->latitude,
                 "accuracy_meters" => $request->accuracy_meters,
-                "country" => $service->city ?? null,
-                "city" => $service->country ?? null,
+                "country" => $city ?? null,
+                "city" => $country ?? null,
             ]);
 
             $account = $action->first($user, $request->payload());
