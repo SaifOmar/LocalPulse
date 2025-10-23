@@ -37,14 +37,18 @@ class CreatePulseAction
             'account_id' => $account->id,
         ]);
         // dd($data);
+        // TODO:: make it take media_id
         $pulse = Pulse::create([
             'account_id' => $account->id,
             'caption' => $data['caption'] ?? null,
             'mood_id' => $data['mood_id'] ?? null,
             'type' => $data['type'] ?? null,
-            'url' => $url ?? null,
+            // 'media_id' => $media_id ?? null
+            'url' => $url ?? null, // remove
         ]);
+
         $action = new CreateTagAction();
+
         if ($tags) {
             foreach ($tags as $tag) {
                 $tag = $action->store($tag);
