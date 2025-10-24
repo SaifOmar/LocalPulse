@@ -12,6 +12,7 @@ test('user account can be deleted', function () {
         'last_name' => 'Shaikh',
         'handle' => 'SaifOmar',
         'email' => $email,
+        'gender' => Arr::random(['male', 'female']),
         'longitude' => fake()->longitude(),
         'latitude' => fake()->latitude(),
         "accuracy_meters" => fake()->numberBetween(1, 15),

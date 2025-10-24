@@ -26,10 +26,10 @@ class CreateAccountRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'hanlde' => ['required', 'string', 'max:255', 'unique:accounts'],
+            // 'hanlde' => ['required', 'string', 'max:255', 'unique:accounts'],
+            'handle' => ['required', 'string', 'max:255', new UniqueHandle($this->route('account')?->id)],
             'bio' => ['nullable', 'string', 'max:255'],
             'gender' => ['nullable', 'string', 'max:255'],
-            'handle' => ['required', 'string', 'max:255', new UniqueHandle($this->route('account')?->id)],
             'avatar' => [
                 'nullable',
                 File::image()

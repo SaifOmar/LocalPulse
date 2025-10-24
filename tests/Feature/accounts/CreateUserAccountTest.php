@@ -2,6 +2,7 @@
 
 use App\Models\Account;
 use App\Models\User;
+use Illuminate\Support\Arr;
 
 uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
 
@@ -12,6 +13,7 @@ test('user account created automatically at registration', function () {
         'last_name' => 'Shaikh',
         'handle' => 'SaifOmar',
         'email' => $email,
+        'gender' => Arr::random(['male', 'female']),
         'longitude' => fake()->longitude(),
         'latitude' => fake()->latitude(),
         "accuracy_meters" => fake()->numberBetween(1, 15),

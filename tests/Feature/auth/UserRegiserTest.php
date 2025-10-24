@@ -17,6 +17,7 @@ describe("user register", function () {
             "email" => "saifs@gmail.com",
             'handle' => 'SaifOmar',
             "password" => "password",
+            "gender" => Arr::random(["male", "female"]),
             "password_confirmation" => "password",
             'longitude' => $this->longitude,
             'latitude' => $this->latitude,

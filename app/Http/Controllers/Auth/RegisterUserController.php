@@ -19,10 +19,10 @@ class RegisterUserController extends Controller
 {
     public function __invoke(UserRegiserRequest $request, CreateUserAccountAction $action): JsonResponse
     {
-        Log::info($request);
+        // Log::info($request);
         $service = new UserLocationService();
         $service->getLocation($request->longitude, $request->latitude);
-        Log::info($service);
+        // Log::info($service);
         try {
             $user = User::create([
                 "first_name" => $request->first_name,
