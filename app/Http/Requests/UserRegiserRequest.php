@@ -41,10 +41,10 @@ class UserRegiserRequest extends FormRequest
             'bio' => ['nullable', 'string', 'max:255'],
             'avatar' => [
                 'nullable',
-                // File::image()
-                //     ->min(1024)
-                //     ->max(12 * 1024)
-                //     ->dimensions(Rule::dimensions()->minWidth(1000)->minHeight(1000))
+                File::image()
+                    ->min(1024)
+                    ->max(12 * 1024)
+                    ->dimensions(Rule::dimensions()->minWidth(1000)->minHeight(1000))
             ]
         ];
     }
