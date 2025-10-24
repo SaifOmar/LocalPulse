@@ -27,7 +27,6 @@ class CreateUserAccountAction
             array_merge(["first" => false], $data),
         );
     }
-
     private function createAccount(User $user, array $data): Account
     {
         $avatar = Arr::pull($data, "avatar");
