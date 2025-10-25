@@ -52,7 +52,11 @@ class PulseController extends Controller
      */
     public function destroy(Pulse $pulse)
     {
-        $pulse->delete();
-        return response()->json()->setStatusCode(200);
+        try {
+            $pulse->delete();
+            return response()->noContent();
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Failed to delete'], 500);
+        }
     }
 }
