@@ -21,8 +21,20 @@ class StorePulseRequest extends FormRequest
      */
     public function rules(): array
     {
+
+        // $table->foreignIdFor(App\Models\Account::class)->constrained()->cascadeOnDelete();
+        // $table->text('caption')->nullable();
+        // $table->foreignIdFor(App\Models\Mood::class)->constrained()->nullOnDelete()->cascadeOnUpdate();
+        // $table->enum('type', ['image','video'])->default("image");
+        // $table->string('url')->nullable();
+        // $table->timestamps();
         return [
-            "mood_id" => "required",
+            "caption" => "nullable|string|max:255",
+            "media" => "required|file",
+            "mood_id" => "required|exists:moods,id",
+            "type" => "required|in:image,video",
+            'tags' => ['nullable', 'array'],
+            'tags.*' => ['string'],
         ];
     }
 }

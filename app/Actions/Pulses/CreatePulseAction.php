@@ -30,7 +30,7 @@ class CreatePulseAction
         $path = $media->getRealPath();
         $newFile = new File($path);
         $fileName = new MediaDispatcher($newFile)->handle($destinationPath);
-        $url = URL::to(Storage::disk('local')->url($fileName));
+        $url = URL::to(Storage::disk('public')->url($fileName));
         $model::create([
             'url' => $url,
             'path' => $fileName,
