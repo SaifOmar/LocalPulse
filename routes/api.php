@@ -15,7 +15,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/{pulse}', [PulseController::class, 'destroy'])->middleware("can:delete,pulse");
     });
 
-    Route::prefix('/likes')->group(function () {
+    Route::prefix('/likes')->name("likes.")->group(function () {
+        Route::get('/', [LikeController::class, 'index'])->name('index');
         Route::post('/', [LikeController::class, 'store']);
         // TODO: add policy middleware
         Route::delete('/', [LikeController::class, 'destroy']);

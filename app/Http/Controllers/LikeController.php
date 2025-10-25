@@ -4,24 +4,35 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Helpers;
 use App\Http\Requests\StoreLikeRequest;
+use App\Http\Requests\DeleteLikeRequest;
 use App\Jobs\ProcessInteraction;
 use App\Models\Like;
 use App\Models\Pulse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
+use function request;
+use function ucfirst;
+
+//TODO: now find a good way to actually do this because this is just pure shit rn
 class LikeController extends Controller
 {
+    // this is for testing only
+    public function index()
+    {
+        $likes = Like::all();
+        return  response()->json($likes);
+    }
     // this should be a job and when the job returns then I should prcocess the interaction
     public function store(StoreLikeRequest $request)
     {
         try {
-            $data = $request->validated();
+            $data = $request->all();
             $account = Helpers::getUserAuthAccount($request->user()->currentAccessToken()->name);
             if (Like::where(['account_id' => $account->id, 'pulse_id' => $data['pulse_id'], 'type' => $data['type']])->first()) {
                 return response()->json(['message' => 'already liked'], 422);
             }
-            $like = Like::create($data);
+            $like = Like::create([...$data,'account_id' => $account->id]);
             $meta = [
                 'liked_by' => $account->id,
                 'creation_like_count' => Pulse::find($data['pulse_id'])->likes()->count(),
@@ -36,19 +47,29 @@ class LikeController extends Controller
             ]);
         }
     }
-    public function destroy(Request $request)
+    private function check($type_id, $type)
+    {
+        $type = "App\Models\\".ucfirst(str_replace('_like', '', $type));
+        return $type::find($type_id);
+    }
+    public function destroy(DeleteLikeRequest $request)
     {
         $account = $request->user()->getActiveAccount();
+        $typeName_id = Helpers::getTypeId($request->type);
+        $type = "App\Models\\".ucfirst(str_replace('_like', '', $request->type));
+        if (!$this->check($request->type_id, $request->type)) {
+            return response()->json(['error' => "invalid data"], 401);
+        }
         $like = Like::where([
             'account_id' => $account->id,
-            'pulse_id' => $request->pulse_id,
             'type' => $request->type,
+            $typeName_id => $request->type_id,
         ])->first();
         try {
             if ($like && $like->delete()) {
                 $meta = [
                     'disliked_by' => $account->id,
-                    'creation_like_count' => Pulse::find($request->pulse_id)->likes()->count(),
+                    'creation_like_count' => Pulse::find($request->type_id)->likes()->count(),
                 ];
                 ProcessInteraction::dispatch(
                     Helpers::generateInteractionData($account, $request->pulse_id, 'like', $meta)

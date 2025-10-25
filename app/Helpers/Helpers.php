@@ -21,6 +21,15 @@ class Helpers
         $account_handle = explode(":", $token);
         return Account::where('handle', $account_handle[1])->first();
     }
+    public static function getTypeId(string $type): string
+    {
+        return match ($type) {
+            'pulse_like' => "pulse_id",
+            'comment_like' => "comment_id",
+            'story_like' => "story_id",
+            default => "pulse_id",
+        };
+    }
     public static function generateInteractionData($account, $pulse, $type, $meta = null): array
     {
 

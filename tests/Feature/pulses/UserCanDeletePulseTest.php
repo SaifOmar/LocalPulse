@@ -28,7 +28,7 @@ describe('User delete pulses tests', function () {
 
     it('can delete pulse ', function () {
         $response = $this->deleteJson("api/pulses/{$this->pulse->id}");
-        $response->assertStatus(200);
+        $response->assertStatus(204);
         $this->assertDatabaseMissing('pulses', [
             'id' => $this->pulse->id,
         ]);
