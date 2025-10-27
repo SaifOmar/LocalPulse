@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Accounts;
 use App\Actions\Accounts\CreateUserAccountAction;
 use App\Actions\Accounts\UpdateUserAccountAction;
 use App\Models\Account;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateAccountRequest;
 use App\Http\Requests\UpdateAccountRequest;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\AccountResource;
 use Illuminate\Validation\ValidationException;
@@ -17,13 +19,14 @@ class AccountController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CreateAccountRequest $request, CreateUserAccountAction $action)
+    public function store(CreateAccountRequest $request, CreateUserAccountAction $action): JsonResponse
     {
         try {
             $account = $action->afterFirst(Auth::user(), $request->validated());
             return response()->json(new AccountResource($account))->setStatusCode(201);
-        } catch (\Exception) {
-            throw ValidationException::withMessages([['error' => 'An error occurred while creating account']]);
+        } catch (\Exception $e) {
+            throw ValidationException::withMessages([['error' => $e->getMessage()]]);
+            // throw ValidationException::withMessages([['error' => 'An error occurred while creating account']]);
         }
     }
     /**
@@ -37,7 +40,7 @@ class AccountController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateAccountRequest $request, Account $account, UpdateUserAccountAction $action)
+    public function update(UpdateAccountRequest $request, Account $account, UpdateUserAccountAction $action): JsonResponse
     {
         try {
             $account = match ($request->requestType()) {
@@ -55,10 +58,25 @@ class AccountController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Account $account)
+    public function destroy(Account $account): JsonResponse
     {
         $account->delete();
         return response()->json(["message" => "Account deleted sad to see you go, rememeber you can always come back to us within 30 days"], 204);
+    }
+
+    public function current(Request $request)
+    {
+        try {
+            $user = Auth::user();
+            return $user;
+            if (!$user->exists()) {
+                throw ValidationException::withMessages([['error' => 'User not found']]);
+            }
+            $account = $user->getActiveAccount();
+            return response()->json(new AccountResource($account))->setStatusCode(200);
+        } catch (\Exception $e) {
+            throw ValidationException::withMessages([['error' => $e->getMessage()]]);
+        }
     }
 
 }

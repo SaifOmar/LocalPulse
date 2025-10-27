@@ -14,12 +14,29 @@ class AccountResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $accounts = $this->accounts;
+        $arr= [];
+        foreach ($accounts as $account) {
+            $arr[] = route('accounts.show', $account->id);
+        }
         return [
-            'id' => $this->id,
-            'handle' => $this->handle,
-            'avatar' => $this->avatar?->url,
-            'user_id' => $this->user_id,
-            'bio' => $this->bio,
+            'data'  =>  [
+                'id' => $this->id,
+                'name' => $this->name,
+                'email' => $this->email,
+                'city' => $this->city,
+                'handle' => $this->handle,
+                'avatar' => $this->avatar?->url ?? null,
+                'country' => $this->country,
+                'created_at' => $this->created_at,
+                'updated_at' => $this->updated_at,
+                'links' => [
+                    'accounts'=> [
+                        ...$arr
+                    ],
+                ]
+            ]
+
         ];
     }
 }

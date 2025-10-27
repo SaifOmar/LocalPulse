@@ -11,4 +11,8 @@ class Image extends Model
     {
         return $this->belongsTo(Account::class);
     }
+    public function pulse()
+    {
+        return $this->belongsTo(Pulse::class);
+    }
 }

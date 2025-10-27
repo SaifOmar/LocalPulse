@@ -13,6 +13,9 @@ use function array_merge;
 
 class CreateUserAccountAction
 {
+    /**
+     * @param array<int,mixed> $data
+     */
     public function first(User $user, array $data): Account
     {
         return $this->createAccount(
@@ -20,6 +23,9 @@ class CreateUserAccountAction
             array_merge(["first" => true], $data),
         );
     }
+    /**
+     * @param array<int,mixed> $data
+     */
     public function afterFirst(User $user, array $data): Account
     {
         return $this->createAccount(
@@ -27,6 +33,9 @@ class CreateUserAccountAction
             array_merge(["first" => false], $data),
         );
     }
+    /**
+     * @param array<int,mixed> $data
+     */
     private function createAccount(User $user, array $data): Account
     {
         $avatar = Arr::pull($data, "avatar");
@@ -45,7 +54,6 @@ class CreateUserAccountAction
                 $destinsationPath,
             );
         }
-
         return $account;
     }
 }

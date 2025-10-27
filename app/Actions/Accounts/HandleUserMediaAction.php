@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Storage;
 class HandleUserMediaAction
 {
     // should make it more dynamic for now that works
-    public function store(Account $account, $avatar, $destinationPath)
+    public function store(Account $account, $avatar, string $destinationPath): void
     {
         $path = $avatar->getRealPath();
         $newFile = new File($path);

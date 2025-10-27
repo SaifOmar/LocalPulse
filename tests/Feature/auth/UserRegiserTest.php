@@ -61,12 +61,13 @@ describe("user register", function () {
             "last_name",
             "email",
             "access",
-            'id',
-            'handle',
-            'avatar',
-            'user_id',
-            'latitude',
-            'longitude',
+            'data' => [
+                'name',
+                'email',
+                'city',
+                'handle',
+                'avatar'
+            ]
         ]);
     });
 });

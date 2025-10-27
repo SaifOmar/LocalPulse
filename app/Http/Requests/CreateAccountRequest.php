@@ -29,7 +29,8 @@ class CreateAccountRequest extends FormRequest
             // 'hanlde' => ['required', 'string', 'max:255', 'unique:accounts'],
             'handle' => ['required', 'string', 'max:255', new UniqueHandle($this->route('account')?->id)],
             'bio' => ['nullable', 'string', 'max:255'],
-            'gender' => ['nullable', 'string', 'max:255'],
+            'gender' => ['required', 'string', 'in:male,female,not specified'],
+            'password' => 'required|string|min:8|confirmed',
             'avatar' => [
                 'nullable',
                 File::image()

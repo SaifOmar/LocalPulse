@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Requests\UserLoginRequest;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
-use App\Models\User;
 
 class LoginUserController extends Controller
 {

@@ -20,9 +20,6 @@ test('user can update account specific data', function () {
     ]);
     $token = $user->createToken('test-token'.$account->id);
 
-    // $response = $this->withHeaders([
-    //     'Authorization' => 'Bearer ' . $token->plainTextToken,
-    // ])->getJson('api/test/auth');
     $response = $this->withHeaders([
         'Authorization' => 'Bearer ' . $token->plainTextToken,
     ])->putJson(
@@ -34,10 +31,12 @@ test('user can update account specific data', function () {
     );
     $response->assertStatus(200);
     $response->assertJsonStructure([
-        'id',
-        'user_id',
-        'handle',
-        'bio',
+        'data'=> [
+            'name',
+            'handle',
+            'email',
+            'avatar',
+        ]
     ]);
     $account = Account::find($account->id);
     // $this->assertEquals($account->user->first_name, 'dSaif');
@@ -103,12 +102,13 @@ test('user can update mixed data', function () {
         ],
     );
     $response->assertStatus(200);
+    // dd($response->json());
     $response->assertJsonStructure([
-        'id',
-        'user_id',
-        'handle',
-        'avatar',
-        'bio'
+        'data' => [
+            'name',
+            'handle',
+            'avatar',
+        ]
      ]);
 
     $account = Account::find($account->id);

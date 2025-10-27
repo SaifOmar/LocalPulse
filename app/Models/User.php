@@ -90,6 +90,15 @@ class User extends Authenticatable
         return $this->first_name . ' ' . $this->last_name;
     }
 
+    public  function getCityAttribute(): ?string
+    {
+        return $this->city ?? null;
+    }
+    public  function getCountryAttribute(): ?string
+    {
+        return $this->country ?? null;
+    }
+
     public function accounts(): HasMany
     {
         return $this->hasMany(Account::class);

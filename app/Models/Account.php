@@ -2,11 +2,16 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Auth;
+use App\Enums\ImageTypeEnum;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
@@ -51,12 +56,51 @@ class Account extends Model
     use Notifiable;
     use SoftDeletes;
 
-    public function user()
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var list<string>
+     */
+    protected $hidden = [
+        'password',
+        'user_id',
+        'deleted_at',
+        'accounts',
+    ];
+    public function getNameAttribute() : string {
+        return $this->user->name;
+    }
+    public  function getEmailAttribute(): string
+    {
+        return $this->user->email;
+    }
+    public function getAccountsAttribute()
+    {
+          return $this->user->accounts;
+    }
+
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
-    public function avatar()
+
+    /**
+     * @return string
+     */
+    public function getAvatarAttribute() : ?Image
     {
-        return $this->hasOne(Image::class);
+        return Image::where(
+            [
+                'account_id' => $this->id,
+                'type' => ImageTypeEnum::AVATAR,
+            ]
+        )->first();
+    }
+
+    public function pulses(): void  {
+        throw new \Exception("Not implemented yet");
+    }
+    public function images(): void  {
+        throw new \Exception("Not implemented yet");
     }
 }

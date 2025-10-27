@@ -6,7 +6,6 @@ use App\Actions\Users\CreateUserAction;
 use App\Actions\Accounts\CreateUserAccountAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRegiserRequest;
-use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use App\Helpers\Helpers;
 use App\Mail\UserRegisteredMail;

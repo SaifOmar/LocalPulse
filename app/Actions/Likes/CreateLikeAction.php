@@ -11,7 +11,7 @@ use Log;
 
 class CreateLikeAction
 {
-    public  array $data;
+    public array $data;
 
     public function store(): Like
     {
