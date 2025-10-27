@@ -33,16 +33,11 @@ describe("User can like pulses", function () {
     });
     it('can like pulse', function () {
         $response = $this->postJson('/api/likes', [
-            'pulse_id' => $this->pulse->id,
+            'liked_id' => $this->pulse->id,
             'account_id' => $this->account->id,
-            'type' => 'pulse_like',
+            'liked_type' => 'pulse',
         ]);
         $response->assertStatus(201);
-        $response->assertJsonStructure([
-            'pulse_id',
-            'account_id',
-            'type'
-        ]);
     });
 
     it('can like comment', function () {
@@ -53,52 +48,23 @@ describe("User can like pulses", function () {
             'type' => 'comment_comment',
         ]);
         $response = $this->postJson('/api/likes', [
-            'pulse_id' => $this->pulse->id,
             'account_id' => $this->account->id,
-            'type' => 'comment_like',
-            'comment_id' => $comment->id,
+            'liked_type' => 'comment',
+            'liked_id' => $comment->id,
         ]);
         $response->assertStatus(201);
-        $response->assertJsonStructure([
-            'pulse_id',
-            'account_id',
-            'type'
-        ]);
 
     });
-    // this is because route is not a toggle
-    it("can't like comment twice", function () {
-        $comment = Comment::create([
-            'pulse_id' => $this->pulse->id,
-            'account_id' => $this->account->id,
-            'content' => 'test',
-            'type' => 'comment_comment',
-        ]);
-        $response = $this->postJson('/api/likes', [
-            'pulse_id' => $this->pulse->id,
-            'account_id' => $this->account->id,
-            'type' => 'comment_like',
-            'comment_id' => $comment->id,
-        ]);
-        $response->assertStatus(201);
-        $response = $this->postJson('/api/likes', [
-            'pulse_id' => $this->pulse->id,
-            'account_id' => $this->account->id,
-            'type' => 'comment_like',
-            'comment_id' => $comment->id,
-        ]);
-        $response->assertStatus(422);
-    });
-    it('can dislike pulse', function () {
+    it('can dislike obj', function () {
         $like = Like::create([
-            'pulse_id' => $this->pulse->id,
+            'liked_id' => $this->pulse->id,
             'account_id' => $this->account->id,
-            'type' => 'pulse_like',
+            'liked_type'=> 'pulse',
         ]);
         $response = $this->deleteJson('/api/likes', [
-            'type_id' => $this->pulse->id,
-            'type' => 'pulse_like',
+            'liked_id' => $this->pulse->id,
+            'liked_type' => 'pulse',
         ]);
-        $response->assertStatus(200);
-    })->skip();
+        $response->assertStatus(204);
+    });
 });

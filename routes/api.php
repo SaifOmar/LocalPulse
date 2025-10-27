@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Likes\LikeController;
 use App\Http\Controllers\Pulses\PulseController;
-use App\Http\Controllers\CommentController;
+use App\Http\Controllers\Comments\CommentController;
 use App\Models\Pulse;
 use Illuminate\Support\Facades\Route;
 use App\Models\Interaction;

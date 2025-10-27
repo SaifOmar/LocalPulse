@@ -18,8 +18,13 @@ class Helpers
     }
     public static function getUserAuthAccount(string $token): ?Account
     {
-        $account_handle = explode(":", $token);
-        return Account::where('handle', $account_handle[1])->first();
+        try {
+            $account_handle = explode(":", $token);
+            return Account::where('handle', $account_handle[1])->first();
+        } catch (\Exception $e) {
+            throw new \Exception("Could not find the account");
+        }
+        return null;
     }
     public static function getTypeId(string $type): string
     {
