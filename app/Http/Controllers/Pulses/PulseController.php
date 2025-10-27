@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Pulses;
 
+use App\Http\Controllers\Controller;
 use App\Actions\Pulses\CreatePulseAction;
 use App\Actions\Pulses\UpdatePulseAction;
 use App\Http\Requests\StorePulseRequest;
@@ -19,9 +20,8 @@ class PulseController extends Controller
     public function index()
     {
         $pulses = Pulse::latest()->get(); // Or use paginate() if needed
-        dump($data = PulseResource::collection($pulses));
         return response()->json(
-            $data
+            PulseResource::collection($pulses)
         )->setStatusCode(200);
     }
 
@@ -39,7 +39,7 @@ class PulseController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePulseRequest $request, Pulse $pulse, UpdatePulseAction $action)
+    public function update(Pulse $pulse, UpdatePulseRequest $request, UpdatePulseAction $action)
     {
         $pulse = $action->update($pulse, $request->validated());
         return response()->json(

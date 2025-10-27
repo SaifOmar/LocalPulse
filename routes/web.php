@@ -10,9 +10,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Route::get("/moods", function () {
-//     $pulse = Pulse::find(3);
-//
-//
-//     return $pulse->url;
-// });
+Route::get("/moods", function () {
+    return Mood::create(
+        [
+            'name' => 'happy',
+            'icon' => "smile"
+        ]
+    );
+});

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Comments;
 
+use App\Http\Controllers\Controller;
 use App\Jobs\ProcessInteraction;
 use App\Models\Pulse;
 use App\Models\Comment;

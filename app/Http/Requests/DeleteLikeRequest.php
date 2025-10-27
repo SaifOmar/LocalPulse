@@ -22,8 +22,8 @@ class DeleteLikeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'type_id' => 'required|integer|',
-            'type' => 'required|string|in:pulse_like,comment_like,story_like',
+            'liked_id' => 'required|integer|',
+            'liked_type' => 'required|string|in:pulse,comment,story',
         ];
     }
 }

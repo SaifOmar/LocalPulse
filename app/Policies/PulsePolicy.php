@@ -22,6 +22,7 @@ class PulsePolicy
     public function view(User $user, Pulse $pulse): bool
     {
         return $user->getActiveAccount() && $pulse ? true : false;
+
     }
 
     /**
@@ -37,6 +38,7 @@ class PulsePolicy
      */
     public function update(User $user, Pulse $pulse): bool
     {
+
         if ($user->getActiveAccount()->id === $pulse->account_id) {
             return true;
         }

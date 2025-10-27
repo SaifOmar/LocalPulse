@@ -22,9 +22,8 @@ class StoreLikeRequest extends FormRequest
     public function rules(): array
     {
         return [
-                'pulse_id' => 'required|integer|exists:pulses,id',
-                'type' => 'required|string|in:pulse_like,comment_like,story_like',
-                'comment_id' => 'nullable|integer',
+                'liked_id' => 'required|integer',
+                'liked_type' => 'required|string|in:pulse,comment,story',
             ];
     }
 }

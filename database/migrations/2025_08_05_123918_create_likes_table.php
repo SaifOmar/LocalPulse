@@ -12,10 +12,9 @@ return new class () extends Migration {
     {
         Schema::create('likes', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(\App\Models\Pulse::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(\App\Models\Account::class)->constrained()->cascadeOnDelete();
-            $table->enum('type', ['comment_like', 'pulse_like', 'story_like'])->default('pulse_like');
-            $table->foreignIdFor(\App\Models\Comment::class)->nullable();
+            $table->string('liked_type')->default('pulse');
+            $table->integer('liked_id')->unsigned();
             $table->timestamps();
         });
     }

@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\PulseController;
-use App\Http\Controllers\LikeController;
+use App\Http\Controllers\Likes\LikeController;
+use App\Http\Controllers\Pulses\PulseController;
 use App\Http\Controllers\CommentController;
 use App\Models\Pulse;
 use Illuminate\Support\Facades\Route;
@@ -9,10 +9,11 @@ use App\Models\Interaction;
 
 // api/pulses/store
 Route::middleware('auth:sanctum')->group(function () {
-    Route::prefix('/pulses')->group(function () {
-        Route::post('/', [PulseController::class, 'store'])->middleware("can:create,".  Pulse::class);
-        Route::put('/{pulse}', [PulseController::class, 'update'])->middleware("can:update,pulse");
-        Route::delete('/{pulse}', [PulseController::class, 'destroy'])->middleware("can:delete,pulse");
+    Route::prefix('/pulses')->name("pulses.")->group(function () {
+        Route::get('/', [PulseController::class, 'index'])->middleware("can:viewAny," . Pulse::class)->name('index');
+        Route::post('/', [PulseController::class, 'store'])->middleware("can:create,".  Pulse::class)->name('store');
+        Route::put('/{pulse}', [PulseController::class, 'update'])->middleware("can:update,pulse")->name('update');
+        Route::delete('/{pulse}', [PulseController::class, 'destroy'])->middleware("can:delete,pulse")->name('destroy');
     });
 
     Route::prefix('/likes')->name("likes.")->group(function () {
